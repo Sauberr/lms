@@ -7,6 +7,11 @@ name = "pypi"
 django = "==4.2"
 faker = "*"
 ipython = "*"
+django-extensions = "*"
+pip = "*"
+install = "*"
+django-ckeditor-5 = "*"
+django-shortuuidfield = "*"
 
 [dev-packages]
 
