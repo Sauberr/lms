@@ -3,16 +3,13 @@ from django.db import models
 from faker import Faker
 
 
-SEX_CHOICE = {
-    ('M', 'Man'),
-    ('W', 'Woman')
-}
+SEX_CHOICE = {("M", "Man"), ("W", "Woman")}
 
 
 class Teacher(models.Model):
     first_name = models.CharField(max_length=255)
     last_name = models.CharField(max_length=255)
-    age = models.IntegerField
+    age = models.IntegerField(default=0)
     experience = models.PositiveIntegerField(default=0)
     salary = models.PositiveIntegerField(default=0)
     sex = models.CharField(choices=SEX_CHOICE, max_length=1)
@@ -20,6 +17,10 @@ class Teacher(models.Model):
 
     def __str__(self):
         return f"{self.first_name} {self.last_name}"
+
+    class Meta:
+        verbose_name = "Teacher"
+        verbose_name_plural = "Teachers"
 
     @classmethod
     def generate_instances(cls, count):

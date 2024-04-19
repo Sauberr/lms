@@ -12,6 +12,11 @@ pip = "*"
 install = "*"
 django-ckeditor-5 = "*"
 django-shortuuidfield = "*"
+webargs = "*"
+django-debug-toolbar = "*"
+pillow = "*"
+flake8 = "*"
+black = "*"
 
 [dev-packages]
 
