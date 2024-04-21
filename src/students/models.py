@@ -29,7 +29,7 @@ class Student(models.Model):
     def generate_instances(cls, count):
         faker = Faker()
         for _ in range(count):
-            student = cls.objects.create(
+            student = cls.objects.create( # noqa
                 first_name=faker.first_name(),
                 last_name=faker.last_name(),
                 email=faker.email(),

@@ -111,4 +111,3 @@ def delete_group(request, pk):
        """
 
     return HttpResponse(form_html)
-

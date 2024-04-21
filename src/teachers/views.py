@@ -26,16 +26,12 @@ def get_teachers(request, **kwargs):
     <form>
         <label for="first_name">First Name:</label><br>
         <input type="text" id="first_name" name="first_name"><br>
-    
         <label for="last_name">Last Name:</label><br>
         <input type="text" id="last_name" name="last_name"><br>
-    
         <label for="sex">Sex:</label><br>
         <input type="text" id="sex" name="sex"><br>
-    
         <label for="search_text">Search:</label><br>
         <input type="text" id="search_text" name="search_text"><br><br>
-
         <button type="submit">Submit</button>
     </form>
     """
