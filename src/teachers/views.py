@@ -1,3 +1,5 @@
+from django.shortcuts import get_object_or_404
+
 from teachers.models import Teacher
 from students.utils.helpers import format_records
 from webargs import fields
@@ -5,6 +7,9 @@ from django.db.models import Q
 from webargs.djangoparser import use_kwargs
 from django.http import HttpResponse, HttpResponseRedirect
 from django.views.decorators.csrf import csrf_exempt
+from django.urls import reverse
+
+from teachers.forms import TeacherForm
 
 
 @use_kwargs(
@@ -83,3 +88,45 @@ def create_teacher(request):
     elif request.method == "GET":
         ...
     return HttpResponse(form)
+
+
+@csrf_exempt
+def update_teacher(request, pk: int):
+    teacher = get_object_or_404(Teacher.objects.all(), pk=pk)
+
+    if request.method == "POST":
+        form = TeacherForm(request.POST, instance=teacher)
+        # student = Student(**request.POST.dict())
+        if form.is_valid():
+            form.save()
+            return HttpResponseRedirect(reverse('teachers:teachers_list'))
+    else:
+        form = TeacherForm(instance=teacher)
+    form_html = f"""
+    <form method="POST">
+        {form.as_p()}
+        <button type="submit">Submit</button>
+    </form>
+    """
+
+    return HttpResponse(form_html)
+
+
+@csrf_exempt
+def delete_teacher(request, pk: int):
+    teacher = get_object_or_404(Teacher.objects.all(), pk=pk)
+
+    if request.method == "POST":
+        form = TeacherForm(request.POST, instance=teacher)
+        teacher.delete()
+        return HttpResponseRedirect(reverse('teachers:teachers_list'))
+    else:
+        form = TeacherForm(instance=teacher)
+    form_html = f"""
+       <form method="POST">
+           {form.as_p()}
+           <button type="submit">Submit</button>
+       </form>
+       """
+
+    return HttpResponse(form_html)

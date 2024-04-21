@@ -1,3 +1,6 @@
+from django.shortcuts import get_object_or_404
+
+from groups.forms import GroupForm
 from groups.models import Group
 from students.utils.helpers import format_records
 from webargs import fields
@@ -5,6 +8,7 @@ from django.db.models import Q
 from webargs.djangoparser import use_kwargs
 from django.http import HttpResponse, HttpResponseRedirect
 from django.views.decorators.csrf import csrf_exempt
+from django.urls import reverse
 
 
 @use_kwargs(
@@ -55,24 +59,56 @@ def get_groups(request, **kwargs):
 
 @csrf_exempt
 def create_group(request):
-    form = """
-
+    if request.method == "POST":
+        form = GroupForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return HttpResponseRedirect(reverse("group:groups_list"))
+    else:
+        form = GroupForm()
+    form_html = f"""
             <form method="POST">
-                <label for="Title">Title:</label><br>
-                <input type="text" id="title" name="title"><br>
-
-                <label for="department">Department:</label><br>
-                <input type="text" id="department" name="department"><br>
-
+                {form.as_p()}
                 <button type="submit">Submit</button>
             </form>
-
             """
+    return HttpResponse(form_html)
 
+
+@csrf_exempt
+def update_group(request, pk):
+    group = get_object_or_404(Group, pk=pk)
     if request.method == "POST":
-        group = Group(**request.POST.dict())
-        group.save()
-        return HttpResponseRedirect("/groups")
-    elif request.method == "GET":
-        ...
-    return HttpResponse(form)
+        form = GroupForm(request.POST, instance=group)
+        if form.is_valid():
+            form.save()
+            return HttpResponseRedirect(reverse("groups:groups_list"))
+    else:
+        form = GroupForm(instance=group)
+    form_html = f"""
+            <form method="POST">
+                {form.as_p()}
+                <button type="submit">Submit</button>
+            </form>
+            """
+    return HttpResponse(form_html)
+
+
+@csrf_exempt
+def delete_group(request, pk):
+    group = get_object_or_404(Group, pk=pk)
+    if request.method == "POST":
+        form = GroupForm(request.POST, instance=group)
+        group.delete()
+        return HttpResponseRedirect(reverse('students:students_list'))
+    else:
+        form = GroupForm(instance=group)
+    form_html = f"""
+       <form method="POST">
+           {form.as_p()}
+           <button type="submit">Submit</button>
+       </form>
+       """
+
+    return HttpResponse(form_html)
+

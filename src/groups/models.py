@@ -1,5 +1,4 @@
 from django.db import models
-from django_ckeditor_5.fields import CKEditor5Field
 from faker import Faker
 from shortuuid.django_fields import ShortUUIDField
 
@@ -16,7 +15,7 @@ class Group(models.Model):
     title = models.CharField(max_length=120)
     department = models.CharField(max_length=120)
     students_count = models.PositiveIntegerField(default=0)
-    description = CKEditor5Field(config_name="extends", blank=True, null=True, default="Description of the group")
+    description = models.TextField(null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 

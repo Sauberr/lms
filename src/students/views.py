@@ -35,7 +35,6 @@ def get_students(request, **kwargs):
 
         <button type="submit">Submit</button>
     </form>
-
     """
 
     students = Student.objects.all()
@@ -67,7 +66,7 @@ def create_student(request):
         # student = Student(**request.POST.dict())
         if form.is_valid():
             form.save()
-            return HttpResponseRedirect(reverse('students:get_students'))
+            return HttpResponseRedirect(reverse('students:students_list'))
     else:
         form = StudentForm()
     form_html = f"""
@@ -88,7 +87,7 @@ def update_student(request, pk: int):
         # student = Student(**request.POST.dict())
         if form.is_valid():
             form.save()
-            return HttpResponseRedirect(reverse('students:get_students'))
+            return HttpResponseRedirect(reverse('groups:groups_lists'))
     else:
         form = StudentForm(instance=student)
     form_html = f"""
@@ -97,5 +96,25 @@ def update_student(request, pk: int):
         <button type="submit">Submit</button>
     </form>
     """
+
+    return HttpResponse(form_html)
+
+
+@csrf_exempt
+def delete_student(request, pk: int):
+    student = get_object_or_404(Student.objects.all(), pk=pk)
+
+    if request.method == "POST":
+        form = StudentForm(request.POST, instance=student)
+        student.delete()
+        return HttpResponseRedirect(reverse('groups:groups_lists'))
+    else:
+        form = StudentForm(instance=student)
+    form_html = f"""
+       <form method="POST">
+           {form.as_p()}
+           <button type="submit">Submit</button>
+       </form>
+       """
 
     return HttpResponse(form_html)

@@ -8,7 +8,6 @@ urlpatterns = [
     path("students/", include("students.urls")),
     path("groups/", include("groups.urls")),
     path("teachers/", include("teachers.urls")),
-    path("ckeditor5/", include("django_ckeditor_5.urls")),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 if settings.DEBUG:
