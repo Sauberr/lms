@@ -1,7 +1,7 @@
 import random
+
 from django.db import models
 from faker import Faker
-
 
 SEX_CHOICE = {("M", "Man"), ("W", "Woman")}
 

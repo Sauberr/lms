@@ -1,5 +1,6 @@
 from django.urls import path
-from groups.views import get_groups, create_group, update_group, delete_group
+
+from groups.views import create_group, delete_group, get_groups, update_group
 
 app_name = 'groups'
 

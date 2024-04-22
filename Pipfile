@@ -16,6 +16,10 @@ django-debug-toolbar = "*"
 pillow = "*"
 flake8 = "*"
 black = "*"
+isort = "*"
+ruff = "*"
+django-crispy-forms = "*"
+crispy-bootstrap5 = "*"
 
 [dev-packages]
 

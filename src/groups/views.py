@@ -1,14 +1,14 @@
+from django.db.models import Q
+from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import get_object_or_404
+from django.urls import reverse
+from django.views.decorators.csrf import csrf_exempt
+from webargs import fields
+from webargs.djangoparser import use_kwargs
 
 from groups.forms import GroupForm
 from groups.models import Group
 from students.utils.helpers import format_records
-from webargs import fields
-from django.db.models import Q
-from webargs.djangoparser import use_kwargs
-from django.http import HttpResponse, HttpResponseRedirect
-from django.views.decorators.csrf import csrf_exempt
-from django.urls import reverse
 
 
 @use_kwargs(

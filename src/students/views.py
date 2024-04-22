@@ -1,15 +1,18 @@
 from django.db.models import Q
 from django.http import HttpResponse, HttpResponseRedirect
-from django.shortcuts import get_object_or_404
-from django.views.decorators.csrf import csrf_exempt
-from students.forms import StudentForm
+from django.shortcuts import get_object_or_404, render
 from django.urls import reverse
+from django.views.decorators.csrf import csrf_exempt
+from webargs import fields
+from webargs.djangoparser import use_kwargs
 
+from students.forms import StudentForm
 from students.models import Student
 from students.utils.helpers import format_records
 
-from webargs import fields
-from webargs.djangoparser import use_kwargs
+
+def index(request):
+    return render(request, 'partials/index.html', context={'key': 'value'})
 
 
 @use_kwargs(
@@ -21,21 +24,6 @@ from webargs.djangoparser import use_kwargs
     location="query",
 )
 def get_students(request, **kwargs):
-    form = """
-
-    <form>
-        <label for="first_name">First Name:</label><br>
-        <input type="text" id="first_name" name="first_name"><br>
-
-        <label for="last_name">Last Name:</label><br>
-        <input type="text" id="last_name" name="last_name"><br>
-
-        <label for="search_text">Search:</label><br>
-        <input type="text" id="search_text" name="search_text"><br><br>
-
-        <button type="submit">Submit</button>
-    </form>
-    """
 
     students = Student.objects.all()
 
@@ -53,10 +41,12 @@ def get_students(request, **kwargs):
             if field_value:
                 students = students.filter(**{field_name: field_value})
 
-    formatted_students = format_records(students)
-    response = form + formatted_students
+    # formatted_students = format_records(students)
+    # response = form + formatted_students
 
-    return HttpResponse(response)
+    # return HttpResponse(form_html)
+
+    return render(request, 'students/students_list.html', context={'students': students})
 
 
 @csrf_exempt
@@ -69,13 +59,15 @@ def create_student(request):
             return HttpResponseRedirect(reverse('students:students_list'))
     else:
         form = StudentForm()
-    form_html = f"""
-    <form method="POST">
-        {form.as_p()}
-        <button type="submit">Submit</button>
-    </form>
-    """
-    return HttpResponse(form_html)
+    # form_html = f"""
+    # <form method="POST">
+    #     {form.as_p()}
+    #     <button type="submit">Submit</button>
+    # </form>
+    # """
+    # return HttpResponse(form_html)
+
+    return render(request, 'students/students_create.html', context={'form': form})
 
 
 @csrf_exempt
@@ -90,14 +82,16 @@ def update_student(request, pk: int):
             return HttpResponseRedirect(reverse('groups:groups_lists'))
     else:
         form = StudentForm(instance=student)
-    form_html = f"""
-    <form method="POST">
-        {form.as_p()}
-        <button type="submit">Submit</button>
-    </form>
-    """
+    # form_html = f"""
+    # <form method="POST">
+    #     {form.as_p()}
+    #     <button type="submit">Submit</button>
+    # </form>
+    # """
 
-    return HttpResponse(form_html)
+    # return HttpResponse(form_html)
+
+    return render(request, 'students/students_edit.html', context={'form': form})
 
 
 @csrf_exempt
