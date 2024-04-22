@@ -39,6 +39,7 @@ INSTALLED_APPS: Tuple[str, ...] = (
     "django.contrib.staticfiles",
     "django_extensions",
     "debug_toolbar",
+    "django.contrib.humanize",
 
     "crispy_forms",
     "crispy_bootstrap5",

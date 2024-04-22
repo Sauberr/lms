@@ -1,6 +1,6 @@
 from django.db.models import Q
 from django.http import HttpResponse, HttpResponseRedirect
-from django.shortcuts import get_object_or_404
+from django.shortcuts import get_object_or_404, render
 from django.urls import reverse
 from django.views.decorators.csrf import csrf_exempt
 from webargs import fields
@@ -21,19 +21,19 @@ from teachers.models import Teacher
     location="query",
 )
 def get_teachers(request, **kwargs):
-    form = """
-    <form>
-        <label for="first_name">First Name:</label><br>
-        <input type="text" id="first_name" name="first_name"><br>
-        <label for="last_name">Last Name:</label><br>
-        <input type="text" id="last_name" name="last_name"><br>
-        <label for="sex">Sex:</label><br>
-        <input type="text" id="sex" name="sex"><br>
-        <label for="search_text">Search:</label><br>
-        <input type="text" id="search_text" name="search_text"><br><br>
-        <button type="submit">Submit</button>
-    </form>
-    """
+    # form = """
+    # <form>
+    #     <label for="first_name">First Name:</label><br>
+    #     <input type="text" id="first_name" name="first_name"><br>
+    #     <label for="last_name">Last Name:</label><br>
+    #     <input type="text" id="last_name" name="last_name"><br>
+    #     <label for="sex">Sex:</label><br>
+    #     <input type="text" id="sex" name="sex"><br>
+    #     <label for="search_text">Search:</label><br>
+    #     <input type="text" id="search_text" name="search_text"><br><br>
+    #     <button type="submit">Submit</button>
+    # </form>
+    # """
 
     teachers = Teacher.objects.all()
 
@@ -51,38 +51,42 @@ def get_teachers(request, **kwargs):
             if field_value:
                 teachers = teachers.filter(**{field_name: field_value})
 
-    formatted_teachers = format_records(teachers)
-    response = form + formatted_teachers
+    # formatted_teachers = format_records(teachers)
+    # response = form + formatted_teachers
+    #
+    # return HttpResponse(response)
 
-    return HttpResponse(response)
+    return render(request, "teachers/teachers_list.html", {"teachers": teachers})
 
 
 @csrf_exempt
 def create_teacher(request):
-    form = """
-
-            <form method="POST">
-                <label for="first_name">First Name:</label><br>
-                <input type="text" id="first_name" name="first_name"><br>
-
-                <label for="last_name">Last Name:</label><br>
-                <input type="text" id="last_name" name="last_name"><br>
-
-                <label for="sex">Sex:</label><br>
-                <input type="sex" id="sex" name="sex"><br><br>
-
-                <button type="submit">Submit</button>
-            </form>
-
-            """
+    # form = """
+    #
+    #         <form method="POST">
+    #             <label for="first_name">First Name:</label><br>
+    #             <input type="text" id="first_name" name="first_name"><br>
+    #
+    #             <label for="last_name">Last Name:</label><br>
+    #             <input type="text" id="last_name" name="last_name"><br>
+    #
+    #             <label for="sex">Sex:</label><br>
+    #             <input type="sex" id="sex" name="sex"><br><br>
+    #
+    #             <button type="submit">Submit</button>
+    #         </form>
+    #
+    #         """
 
     if request.method == "POST":
-        teacher = Teacher(**request.POST.dict())
-        teacher.save()
-        return HttpResponseRedirect("/teachers")
-    elif request.method == "GET":
-        ...
-    return HttpResponse(form)
+        # teacher = Teacher(**request.POST.dict())
+        form = TeacherForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return HttpResponseRedirect(reverse('teachers:teachers_list'))
+    else:
+        form = TeacherForm()
+    return render(request, 'teachers/teachers_create.html', context={'form': form})
 
 
 @csrf_exempt
@@ -97,14 +101,16 @@ def update_teacher(request, pk: int):
             return HttpResponseRedirect(reverse('teachers:teachers_list'))
     else:
         form = TeacherForm(instance=teacher)
-    form_html = f"""
-    <form method="POST">
-        {form.as_p()}
-        <button type="submit">Submit</button>
-    </form>
-    """
+    # form_html = f"""
+    # <form method="POST">
+    #     {form.as_p()}
+    #     <button type="submit">Submit</button>
+    # </form>
+    # """
+    #
+    # return HttpResponse(form_html)
 
-    return HttpResponse(form_html)
+    return render(request, 'teachers/teachers_edit.html', context={'form': form})
 
 
 @csrf_exempt
@@ -116,12 +122,14 @@ def delete_teacher(request, pk: int):
         teacher.delete()
         return HttpResponseRedirect(reverse('teachers:teachers_list'))
     else:
-        form = TeacherForm(instance=teacher)
-    form_html = f"""
-       <form method="POST">
-           {form.as_p()}
-           <button type="submit">Submit</button>
-       </form>
-       """
+        form = TeacherForm(instance=teacher) # noqa
+    # form_html = f"""
+    #    <form method="POST">
+    #        {form.as_p()}
+    #        <button type="submit">Submit</button>
+    #    </form>
+    #    """
+    #
+    # return HttpResponse(form_html)
 
-    return HttpResponse(form_html)
+    return render(request, 'teachers/teachers_delete.html', context={'teacher': teacher})

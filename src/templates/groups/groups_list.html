@@ -27,44 +27,29 @@
         <thead>
             <tr>
               <th scope="col">#</th>
-              <th scope="col">First name</th>
-              <th scope="col">Last name</th>
-              <th scope="col">Email</th>
-              <th scope="col">Grade</th>
-              <th scope="col">Birth date</th>
-              <th scope="col">Age</th>
+              <th scope="col">Title</th>
               <th scope="col">Department</th>
+              <th scope="col">Student count</th>
+              <th scope="col">Description</th>
               <th scope="col">Update</th>
               <th scope="col">Delete</th>
             </tr>
       </thead>
       <tbody>
-        {% for student in students %}
+        {% for group in groups %}
           <tr>
-            <th scope="row">{{ student.pk }}</th>
-            <td>{{ student.first_name|title }}</td>
-            <td>{{ student.last_name|title }}</td>
-            <td>{{ student.email }}</td>
-            <td>{{ student.grade }}</td>
-              {% if student.birth_date  %}
-            <td>{{ student.birth_date|date:'d M Y' }}</td>
-            <td>{{ student.age }}</td>
-               {% else %}
-            <td>Not available</td>
-            <td>Not available</td>
-              {% endif %}
-          {% if student.department %}
-            <td>{{ student.department }}</td>
-           {% else %}
-            <td>Not available</td>
-          {% endif %}
+            <th scope="row">{{ group.pk }}</th>
+            <td>{{ group.title|title }}</td>
+            <td>{{ group.department|title }}</td>
+            <td>{{ group.students_count }}</td>
+            <td>{{ group.description }}</td>
           <th>
-              <a href="{% url 'students:update_student' student.pk %}"  type="button" class="btn btn-primary" data-toggle="modal">
+              <a href="{% url 'groups:update_group' group.pk %}"  type="button" class="btn btn-primary" data-toggle="modal">
                 Edit
               </a>
           </th>
           <th>
-              <a href="{% url 'students:delete_student' student.pk %}"  type="button" class="btn btn-danger" data-toggle="modal">
+              <a href="{% url 'groups:delete_group' group.pk %}"  type="button" class="btn btn-danger" data-toggle="modal">
                 Delete
               </a>
           </th>

@@ -101,14 +101,16 @@ def delete_student(request, pk: int):
     if request.method == "POST":
         form = StudentForm(request.POST, instance=student)
         student.delete()
-        return HttpResponseRedirect(reverse('groups:groups_lists'))
+        return HttpResponseRedirect(reverse('students:students_list'))
     else:
         form = StudentForm(instance=student)
-    form_html = f"""
-       <form method="POST">
-           {form.as_p()}
-           <button type="submit">Submit</button>
-       </form>
-       """
+    # form_html = f"""
+    #    <form method="POST">
+    #        {form.as_p()}
+    #        <button type="submit">Submit</button>
+    #    </form>
+    #    """
 
-    return HttpResponse(form_html)
+    # return HttpResponse(form_html)
+
+    return render(request, 'students/students_delete.html', context={'form': form, 'student': student})

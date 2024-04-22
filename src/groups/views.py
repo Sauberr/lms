@@ -1,6 +1,6 @@
 from django.db.models import Q
 from django.http import HttpResponse, HttpResponseRedirect
-from django.shortcuts import get_object_or_404
+from django.shortcuts import get_object_or_404, render
 from django.urls import reverse
 from django.views.decorators.csrf import csrf_exempt
 from webargs import fields
@@ -20,20 +20,20 @@ from students.utils.helpers import format_records
     location="query",
 )
 def get_groups(request, **kwargs):
-    form = """
-    <form>
-        <label for="title">Title:</label><br>
-        <input type="title" id="title" name="title"><br>
-
-        <label for="department">Department:</label><br>
-        <input type="text" id="department" name="department"><br>
-
-        <label for="search_text">Search:</label><br>
-        <input type="text" id="search_text" name="search_text"><br><br>
-
-        <button type="submit">Submit</button>
-    </form>
-    """
+    # form = """
+    # <form>
+    #     <label for="title">Title:</label><br>
+    #     <input type="title" id="title" name="title"><br>
+    #
+    #     <label for="department">Department:</label><br>
+    #     <input type="text" id="department" name="department"><br>
+    #
+    #     <label for="search_text">Search:</label><br>
+    #     <input type="text" id="search_text" name="search_text"><br><br>
+    #
+    #     <button type="submit">Submit</button>
+    # </form>
+    # """
 
     groups = Group.objects.all()
 
@@ -51,10 +51,12 @@ def get_groups(request, **kwargs):
             if field_value:
                 groups = groups.filter(**{field_name: field_value})
 
-    formatted_teachers = format_records(groups)
-    response = form + formatted_teachers
+    # formatted_teachers = format_records(groups)
+    # response = form + formatted_teachers
+    #
+    # return HttpResponse(response)
 
-    return HttpResponse(response)
+    return render(request, 'groups/groups_list.html', context={'groups': groups})
 
 
 @csrf_exempt
@@ -66,13 +68,15 @@ def create_group(request):
             return HttpResponseRedirect(reverse("group:groups_list"))
     else:
         form = GroupForm()
-    form_html = f"""
-            <form method="POST">
-                {form.as_p()}
-                <button type="submit">Submit</button>
-            </form>
-            """
-    return HttpResponse(form_html)
+    # form_html = f"""
+    #         <form method="POST">
+    #             {form.as_p()}
+    #             <button type="submit">Submit</button>
+    #         </form>
+    #         """
+    # return HttpResponse(form_html)
+
+    return render(request, 'groups/groups_create.html', context={'form': form})
 
 
 @csrf_exempt
@@ -85,13 +89,15 @@ def update_group(request, pk):
             return HttpResponseRedirect(reverse("groups:groups_list"))
     else:
         form = GroupForm(instance=group)
-    form_html = f"""
-            <form method="POST">
-                {form.as_p()}
-                <button type="submit">Submit</button>
-            </form>
-            """
-    return HttpResponse(form_html)
+    # form_html = f"""
+    #         <form method="POST">
+    #             {form.as_p()}
+    #             <button type="submit">Submit</button>
+    #         </form>
+    #         """
+    # return HttpResponse(form_html)
+
+    return render(request, 'groups/groups_edit.html', context={'form': form})
 
 
 @csrf_exempt
@@ -100,14 +106,16 @@ def delete_group(request, pk):
     if request.method == "POST":
         form = GroupForm(request.POST, instance=group)
         group.delete()
-        return HttpResponseRedirect(reverse('students:students_list'))
+        return HttpResponseRedirect(reverse('groups:groups_list'))
     else:
         form = GroupForm(instance=group)
-    form_html = f"""
-       <form method="POST">
-           {form.as_p()}
-           <button type="submit">Submit</button>
-       </form>
-       """
+    # form_html = f"""
+    #    <form method="POST">
+    #        {form.as_p()}
+    #        <button type="submit">Submit</button>
+    #    </form>
+    #    """
+    #
+    # return HttpResponse(form_html)
 
-    return HttpResponse(form_html)
+    return render(request, 'groups/groups_delete.html', context={'form': form})
