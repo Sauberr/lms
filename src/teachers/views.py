@@ -35,7 +35,14 @@ def get_teachers(request, **kwargs):
     # </form>
     # """
 
-    teachers = Teacher.objects.all()
+    query = request.GET.get('q')
+
+    if query:
+        teachers = Teacher.objects.filter(
+            Q(first_name__icontains=query) | Q(last_name__icontains=query) | Q(age=query))
+
+    else:
+        teachers = Teacher.objects.all()
 
     search_fields = ["last_name", "first_name", "sex"]
 

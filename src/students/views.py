@@ -25,7 +25,14 @@ def index(request):
 )
 def get_students(request, **kwargs):
 
-    students = Student.objects.all()
+    query = request.GET.get('q')
+
+    if query:
+        students = Student.objects.filter(
+            Q(first_name__icontains=query) | Q(last_name__icontains=query) | Q(email__icontains=query)
+        )
+    else:
+        students = Student.objects.all()
 
     search_fields = ["last_name", "first_name", "email"]
 

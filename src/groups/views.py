@@ -35,7 +35,13 @@ def get_groups(request, **kwargs):
     # </form>
     # """
 
-    groups = Group.objects.all()
+    query = request.GET.get('q')
+
+    if query:
+        groups = Group.objects.filter(
+            Q(title__icontains=query) | Q(department__icontains=query))
+    else:
+        groups = Group.objects.all()
 
     search_fields = ["title", "department"]
 
