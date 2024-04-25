@@ -3,17 +3,21 @@ import random
 from django.db import models
 from faker import Faker
 
+from groups.models import Group
+
+from abstract_class.models import Person
+
+
 SEX_CHOICE = {("M", "Man"), ("W", "Woman")}
 
 
-class Teacher(models.Model):
-    first_name = models.CharField(max_length=255)
-    last_name = models.CharField(max_length=255)
+class Teacher(Person):
     age = models.IntegerField(default=0)
     experience = models.PositiveIntegerField(default=0)
     salary = models.PositiveIntegerField(default=0)
     sex = models.CharField(choices=SEX_CHOICE, max_length=1)
     subject = models.CharField(max_length=255)
+    group = models.ManyToManyField(Group)
 
     def __str__(self):
         return f"{self.first_name} {self.last_name}"

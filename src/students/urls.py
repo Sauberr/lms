@@ -8,6 +8,6 @@ app_name = 'students'
 urlpatterns = [
     path('', get_students, name='students_list'),
     path('create/', create_student, name='create_student'),
-    path('update/<int:pk>/', update_student, name='update_student'),
-    path('delete/<int:pk>/', delete_student, name='delete_student'),
+    path('update/<uuid:uuid>/', update_student, name='update_student'),
+    path('delete/<uuid:uuid>/', delete_student, name='delete_student'),
 ]

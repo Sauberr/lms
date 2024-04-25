@@ -20,6 +20,7 @@ isort = "*"
 ruff = "*"
 django-crispy-forms = "*"
 crispy-bootstrap5 = "*"
+uuid = "*"
 
 [dev-packages]
 

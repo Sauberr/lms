@@ -2,7 +2,6 @@ from django.db.models import Q
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import get_object_or_404, render
 from django.urls import reverse
-from django.views.decorators.csrf import csrf_exempt
 from webargs import fields
 from webargs.djangoparser import use_kwargs
 
@@ -56,7 +55,6 @@ def get_students(request, **kwargs):
     return render(request, 'students/students_list.html', context={'students': students})
 
 
-@csrf_exempt
 def create_student(request):
     if request.method == "POST":
         form = StudentForm(request.POST)
@@ -77,7 +75,6 @@ def create_student(request):
     return render(request, 'students/students_create.html', context={'form': form})
 
 
-@csrf_exempt
 def update_student(request, pk: int):
     student = get_object_or_404(Student.objects.all(), pk=pk)
 
@@ -101,7 +98,6 @@ def update_student(request, pk: int):
     return render(request, 'students/students_edit.html', context={'form': form})
 
 
-@csrf_exempt
 def delete_student(request, pk: int):
     student = get_object_or_404(Student.objects.all(), pk=pk)
 

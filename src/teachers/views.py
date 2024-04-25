@@ -2,7 +2,6 @@ from django.db.models import Q
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import get_object_or_404, render
 from django.urls import reverse
-from django.views.decorators.csrf import csrf_exempt
 from webargs import fields
 from webargs.djangoparser import use_kwargs
 
@@ -66,7 +65,6 @@ def get_teachers(request, **kwargs):
     return render(request, "teachers/teachers_list.html", {"teachers": teachers})
 
 
-@csrf_exempt
 def create_teacher(request):
     # form = """
     #
@@ -96,7 +94,6 @@ def create_teacher(request):
     return render(request, 'teachers/teachers_create.html', context={'form': form})
 
 
-@csrf_exempt
 def update_teacher(request, pk: int):
     teacher = get_object_or_404(Teacher.objects.all(), pk=pk)
 
@@ -120,7 +117,6 @@ def update_teacher(request, pk: int):
     return render(request, 'teachers/teachers_edit.html', context={'form': form})
 
 
-@csrf_exempt
 def delete_teacher(request, pk: int):
     teacher = get_object_or_404(Teacher.objects.all(), pk=pk)
 

@@ -1,19 +1,22 @@
 from datetime import datetime
 
-from django.core.validators import MinLengthValidator
 from django.db import models
 from faker import Faker
 
-from students.utils.validators import first_name_validator
+from abstract_class.models import Person
+
+from groups.models import Group
+
+from uuid import uuid4
 
 
-class Student(models.Model):
-    first_name = models.CharField(max_length=120, null=True, validators=[MinLengthValidator(2), first_name_validator])
-    last_name = models.CharField(max_length=120, null=True, validators=[MinLengthValidator(2)])
+class Student(Person):
+    uuid = models.UUIDField(primary_key=True, editable=False, default=uuid4, unique=True, db_index=True)
     email = models.EmailField(max_length=120)
     grade = models.PositiveIntegerField(default=0)
     birth_date = models.DateField(null=True)
     department = models.CharField(max_length=120, null=True)
+    group = models.ForeignKey(Group, on_delete=models.CASCADE)
 
     def age(self):
         return datetime.now().year - self.birth_date.year
