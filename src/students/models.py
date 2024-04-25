@@ -19,7 +19,12 @@ class Student(Person):
     group = models.ForeignKey(Group, on_delete=models.CASCADE)
 
     def age(self):
-        return datetime.now().year - self.birth_date.year
+        today = datetime.today()
+        age = today.year - self.birth_date.year
+        if today.month < self.birth_date.month or (
+                today.month == self.birth_date.month and today.day < self.birth_date.day):
+            age -= 1
+        return age
 
     def __str__(self):
         return f"{self.first_name} {self.last_name}"
