@@ -1,0 +1,27 @@
+{% extends 'partials/index.html' %}
+
+{% block content %}
+
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <h1 class="text-center">Teacher's groups</h1>
+            {%  if groups %}
+                {% for group in groups %}
+
+                    <p> {{ group.title }}</p>
+                    <br>
+                    <p> {{ group.description }}</p>
+                    <br>
+                    <p> {{ group.teacher }}</p>
+
+                 {% endfor %}
+
+            {% else %}
+                <p>There are no groups</p>
+            {% endif %}
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

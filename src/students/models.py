@@ -12,11 +12,13 @@ from uuid import uuid4
 
 class Student(Person):
     uuid = models.UUIDField(primary_key=True, editable=False, default=uuid4, unique=True, db_index=True)
+    avatar = models.ImageField(upload_to="avatars", null=True, blank=True)
     email = models.EmailField(max_length=120)
     grade = models.PositiveIntegerField(default=0)
     birth_date = models.DateField(null=True)
     department = models.CharField(max_length=120, null=True)
     group = models.ForeignKey(Group, on_delete=models.CASCADE)
+    resume = models.FileField(upload_to="resumes", null=True, blank=True)
 
     def age(self):
         today = datetime.today()

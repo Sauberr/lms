@@ -46,6 +46,7 @@
               <th scope="col">Subject</th>
               <th scope="col">Update</th>
               <th scope="col">Delete</th>
+              <th scope="col">Teacher's group</th>
             </tr>
       </thead>
       <tbody>
@@ -75,6 +76,11 @@
           <th>
               <a href="{% url 'teachers:delete_teacher' teacher.pk %}"  type="button" class="btn btn-danger" data-toggle="modal">
                 Delete
+              </a>
+          </th>
+          <th>
+              <a href="{% url 'teachers:teacher_groups' teacher.pk %}"  type="button" class="btn btn-warning" data-toggle="modal">
+                Go
               </a>
           </th>
           </tr>

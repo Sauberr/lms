@@ -47,11 +47,6 @@ def get_students(request, **kwargs):
             if field_value:
                 students = students.filter(**{field_name: field_value})
 
-    # formatted_students = format_records(students)
-    # response = form + formatted_students
-
-    # return HttpResponse(form_html)
-
     return render(request, 'students/students_list.html', context={'students': students})
 
 
@@ -64,13 +59,6 @@ def create_student(request):
             return HttpResponseRedirect(reverse('students:students_list'))
     else:
         form = StudentForm()
-    # form_html = f"""
-    # <form method="POST">
-    #     {form.as_p()}
-    #     <button type="submit">Submit</button>
-    # </form>
-    # """
-    # return HttpResponse(form_html)
 
     return render(request, 'students/students_create.html', context={'form': form})
 
@@ -86,14 +74,6 @@ def update_student(request, pk: int):
             return HttpResponseRedirect(reverse('groups:groups_lists'))
     else:
         form = StudentForm(instance=student)
-    # form_html = f"""
-    # <form method="POST">
-    #     {form.as_p()}
-    #     <button type="submit">Submit</button>
-    # </form>
-    # """
-
-    # return HttpResponse(form_html)
 
     return render(request, 'students/students_edit.html', context={'form': form})
 
@@ -107,13 +87,5 @@ def delete_student(request, pk: int):
         return HttpResponseRedirect(reverse('students:students_list'))
     else:
         form = StudentForm(instance=student)
-    # form_html = f"""
-    #    <form method="POST">
-    #        {form.as_p()}
-    #        <button type="submit">Submit</button>
-    #    </form>
-    #    """
-
-    # return HttpResponse(form_html)
 
     return render(request, 'students/students_delete.html', context={'form': form, 'student': student})

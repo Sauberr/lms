@@ -38,7 +38,7 @@ def get_teachers(request, **kwargs):
 
     if query:
         teachers = Teacher.objects.filter(
-            Q(first_name__icontains=query) | Q(last_name__icontains=query) | Q(age=query))
+            Q(first_name__icontains=query) | Q(last_name__icontains=query))
 
     else:
         teachers = Teacher.objects.all()
@@ -136,3 +136,9 @@ def delete_teacher(request, pk: int):
     # return HttpResponse(form_html)
 
     return render(request, 'teachers/teachers_delete.html', context={'teacher': teacher})
+
+
+def teacher_groups(request, pk: int):
+    teacher = get_object_or_404(Teacher.objects.all(), pk=pk)
+    groups = teacher.groups.all()
+    return render(request, 'teachers/teacher_groups.html', context={'teacher': teacher, 'groups': groups})
