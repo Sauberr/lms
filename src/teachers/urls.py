@@ -1,14 +1,14 @@
 from django.urls import path
 
-from teachers.views import (create_teacher, delete_teacher, get_teachers,
-                            update_teacher, teacher_groups)
+from teachers.views import (CreateTeacherView, DeleteTeacherView, TeacherListView,
+                            UpdateTeacherView, GetTeacherGroupInfoView)
 
 app_name = "teachers"
 
 urlpatterns = [
-    path("", get_teachers, name="teachers_list"),
-    path("create/", create_teacher, name="create_teacher"),
-    path("update/<str:pk>/", update_teacher, name="update_teacher"),
-    path("delete/<str:pk>/", delete_teacher, name="delete_teacher"),
-    path("groups/<str:pk>/", teacher_groups, name="teacher_groups")
+    path("", TeacherListView.as_view(), name="teachers_list"),
+    path("create/", CreateTeacherView.as_view(), name="create_teacher"),
+    path("update/<str:pk>/", UpdateTeacherView.as_view(), name="update_teacher"),
+    path("delete/<str:pk>/", DeleteTeacherView.as_view(), name="delete_teacher"),
+    path("groups/<str:pk>/", GetTeacherGroupInfoView.as_view(), name="teacher_groups")
 ]

@@ -1,144 +1,57 @@
 from django.db.models import Q
-from django.http import HttpResponse, HttpResponseRedirect
-from django.shortcuts import get_object_or_404, render
-from django.urls import reverse
-from webargs import fields
-from webargs.djangoparser import use_kwargs
+from django.shortcuts import render
+from django.urls import reverse_lazy
+from django.views.generic import CreateView, DeleteView, UpdateView, DetailView, ListView
 
-from students.utils.helpers import format_records
 from teachers.forms import TeacherForm
 from teachers.models import Teacher
 
 
-@use_kwargs(
-    {
-        "first_name": fields.Str(required=False),
-        "last_name": fields.Str(required=False),
-        "sex": fields.Str(required=False),
-        "search_text": fields.Str(required=False),
-    },
-    location="query",
-)
-def get_teachers(request, **kwargs):
-    # form = """
-    # <form>
-    #     <label for="first_name">First Name:</label><br>
-    #     <input type="text" id="first_name" name="first_name"><br>
-    #     <label for="last_name">Last Name:</label><br>
-    #     <input type="text" id="last_name" name="last_name"><br>
-    #     <label for="sex">Sex:</label><br>
-    #     <input type="text" id="sex" name="sex"><br>
-    #     <label for="search_text">Search:</label><br>
-    #     <input type="text" id="search_text" name="search_text"><br><br>
-    #     <button type="submit">Submit</button>
-    # </form>
-    # """
+class TeacherListView(ListView):
+    template_name = "teachers/teachers_list.html"
+    model = Teacher
+    context_object_name = 'teachers'
 
-    query = request.GET.get('q')
-
-    if query:
-        teachers = Teacher.objects.filter(
-            Q(first_name__icontains=query) | Q(last_name__icontains=query))
-
-    else:
-        teachers = Teacher.objects.all()
-
-    search_fields = ["last_name", "first_name", "sex"]
-
-    for field_name, field_value in kwargs.items():
-
-        if field_name == "search_text":
-            or_filter = Q()
-            for field in search_fields:
-                # accumulate filter condition
-                or_filter |= Q(**{f"{field}__icontains": field_value})
-            teachers = teachers.filter(or_filter)
+    def get_queryset(self):
+        query = self.request.GET.get('q')
+        if query:
+            return Teacher.objects.filter(Q(first_name__icontains=query) | Q(last_name__icontains=query))
         else:
-            if field_value:
-                teachers = teachers.filter(**{field_name: field_value})
-
-    # formatted_teachers = format_records(teachers)
-    # response = form + formatted_teachers
-    #
-    # return HttpResponse(response)
-
-    return render(request, "teachers/teachers_list.html", {"teachers": teachers})
+            return Teacher.objects.all()
 
 
-def create_teacher(request):
-    # form = """
-    #
-    #         <form method="POST">
-    #             <label for="first_name">First Name:</label><br>
-    #             <input type="text" id="first_name" name="first_name"><br>
-    #
-    #             <label for="last_name">Last Name:</label><br>
-    #             <input type="text" id="last_name" name="last_name"><br>
-    #
-    #             <label for="sex">Sex:</label><br>
-    #             <input type="sex" id="sex" name="sex"><br><br>
-    #
-    #             <button type="submit">Submit</button>
-    #         </form>
-    #
-    #         """
-
-    if request.method == "POST":
-        # teacher = Teacher(**request.POST.dict())
-        form = TeacherForm(request.POST)
-        if form.is_valid():
-            form.save()
-            return HttpResponseRedirect(reverse('teachers:teachers_list'))
-    else:
-        form = TeacherForm()
-    return render(request, 'teachers/teachers_create.html', context={'form': form})
+class CreateTeacherView(CreateView):
+    template_name = "teachers/teachers_create.html"
+    model = Teacher
+    form_class = TeacherForm
+    success_url = reverse_lazy('teachers:teachers_list')
 
 
-def update_teacher(request, pk: int):
-    teacher = get_object_or_404(Teacher.objects.all(), pk=pk)
-
-    if request.method == "POST":
-        form = TeacherForm(request.POST, instance=teacher)
-        # student = Student(**request.POST.dict())
-        if form.is_valid():
-            form.save()
-            return HttpResponseRedirect(reverse('teachers:teachers_list'))
-    else:
-        form = TeacherForm(instance=teacher)
-    # form_html = f"""
-    # <form method="POST">
-    #     {form.as_p()}
-    #     <button type="submit">Submit</button>
-    # </form>
-    # """
-    #
-    # return HttpResponse(form_html)
-
-    return render(request, 'teachers/teachers_edit.html', context={'form': form})
+class UpdateTeacherView(UpdateView):
+    template_name = "teachers/teachers_edit.html"
+    model = Teacher
+    form_class = TeacherForm
+    pk_url_kwarg = 'pk'
+    success_url = reverse_lazy('teachers:teachers_list')
+    queryset = Teacher.objects.all()
 
 
-def delete_teacher(request, pk: int):
-    teacher = get_object_or_404(Teacher.objects.all(), pk=pk)
-
-    if request.method == "POST":
-        form = TeacherForm(request.POST, instance=teacher)
-        teacher.delete()
-        return HttpResponseRedirect(reverse('teachers:teachers_list'))
-    else:
-        form = TeacherForm(instance=teacher) # noqa
-    # form_html = f"""
-    #    <form method="POST">
-    #        {form.as_p()}
-    #        <button type="submit">Submit</button>
-    #    </form>
-    #    """
-    #
-    # return HttpResponse(form_html)
-
-    return render(request, 'teachers/teachers_delete.html', context={'teacher': teacher})
+class DeleteTeacherView(DeleteView):
+    template_name = "teachers/teachers_delete.html"
+    model = Teacher
+    success_url = reverse_lazy('teachers:teachers_list')
+    pk_url_kwarg = 'pk'
+    queryset = Teacher.objects.all()
 
 
-def teacher_groups(request, pk: int):
-    teacher = get_object_or_404(Teacher.objects.all(), pk=pk)
-    groups = teacher.groups.all()
-    return render(request, 'teachers/teacher_groups.html', context={'teacher': teacher, 'groups': groups})
+class GetTeacherGroupInfoView(DetailView):
+    template_name = "teachers/teacher_groups.html"
+    model = Teacher
+    pk_url_kwarg = "pk"
+    context_object_name = "teacher"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['groups'] = self.object.groups.all()
+        return context
+

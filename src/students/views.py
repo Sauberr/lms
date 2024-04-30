@@ -1,91 +1,53 @@
 from django.db.models import Q
-from django.http import HttpResponse, HttpResponseRedirect
-from django.shortcuts import get_object_or_404, render
-from django.urls import reverse
+from django.shortcuts import render
+from django.urls import reverse, reverse_lazy
 from webargs import fields
 from webargs.djangoparser import use_kwargs
 
 from students.forms import StudentForm
 from students.models import Student
-from students.utils.helpers import format_records
+from django.views.generic import TemplateView, CreateView, UpdateView, DeleteView, ListView
 
 
-def index(request):
-    return render(request, 'partials/index.html', context={'key': 'value'})
+class IndexView(TemplateView):
+    template_name = "partials/index.html"
+    extra_context = {'title': 'Home'}
+    http_method_names = ['get']
 
 
-@use_kwargs(
-    {
-        "first_name": fields.Str(required=False),
-        "last_name": fields.Str(required=False),
-        "search_text": fields.Str(required=False),
-    },
-    location="query",
-)
-def get_students(request, **kwargs):
+class StudentsListView(ListView):
+    template_name = "students/students_list.html"
+    model = Student
+    context_object_name = 'students'
 
-    query = request.GET.get('q')
-
-    if query:
-        students = Student.objects.filter(
-            Q(first_name__icontains=query) | Q(last_name__icontains=query) | Q(email__icontains=query)
-        )
-    else:
-        students = Student.objects.all()
-
-    search_fields = ["last_name", "first_name", "email"]
-
-    for field_name, field_value in kwargs.items():
-
-        if field_name == "search_text":
-            or_filter = Q()
-            for field in search_fields:
-                # accumulate filter condition
-                or_filter |= Q(**{f"{field}__icontains": field_value})
-            students = students.filter(or_filter)
+    def get_queryset(self):
+        query = self.request.GET.get('q')
+        if query:
+            return Student.objects.filter(Q(first_name__icontains=query) | Q(last_name__icontains=query))
         else:
-            if field_value:
-                students = students.filter(**{field_name: field_value})
-
-    return render(request, 'students/students_list.html', context={'students': students})
+            return Student.objects.all()
 
 
-def create_student(request):
-    if request.method == "POST":
-        form = StudentForm(request.POST)
-        # student = Student(**request.POST.dict())
-        if form.is_valid():
-            form.save()
-            return HttpResponseRedirect(reverse('students:students_list'))
-    else:
-        form = StudentForm()
-
-    return render(request, 'students/students_create.html', context={'form': form})
+class CreateStudentView(CreateView):
+    template_name = "students/students_create.html"
+    model = Student
+    form_class = StudentForm
+    success_url = reverse_lazy('students:students_list')
 
 
-def update_student(request, pk: int):
-    student = get_object_or_404(Student.objects.all(), pk=pk)
-
-    if request.method == "POST":
-        form = StudentForm(request.POST, instance=student)
-        # student = Student(**request.POST.dict())
-        if form.is_valid():
-            form.save()
-            return HttpResponseRedirect(reverse('groups:groups_lists'))
-    else:
-        form = StudentForm(instance=student)
-
-    return render(request, 'students/students_edit.html', context={'form': form})
+class UpdateStudentView(UpdateView):
+    template_name = "students/students_edit.html"
+    model = Student
+    form_class = StudentForm
+    pk_url_kwarg = 'uuid'
+    success_url = reverse_lazy('students:students_list')
+    queryset = Student.objects.all()
 
 
-def delete_student(request, pk: int):
-    student = get_object_or_404(Student.objects.all(), pk=pk)
+class DeleteStudentView(DeleteView):
+    template_name = "students/students_delete.html"
+    model = Student
+    success_url = reverse_lazy('students:students_list')
+    pk_url_kwarg = 'uuid'
+    queryset = Student.objects.all()
 
-    if request.method == "POST":
-        form = StudentForm(request.POST, instance=student)
-        student.delete()
-        return HttpResponseRedirect(reverse('students:students_list'))
-    else:
-        form = StudentForm(instance=student)
-
-    return render(request, 'students/students_delete.html', context={'form': form, 'student': student})

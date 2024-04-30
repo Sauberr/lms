@@ -114,6 +114,12 @@
 
     <main class="px-3">
         {% block content %}
+            <form action="{% url 'students:students_list'  %}" method="GET" class="mb-3">
+                <div class="input-group">
+                    <input type="text" name="q" class="form-control" placeholder="Search" aria-label="Search">
+                    <button class="btn btn-outline-success" type="submit">Search</button>
+                </div>
+            </form>
             <img style="margin-bottom: 45px;" src="{% static 'img/lms.png' %}">
             <h1>Cover your page.</h1>
             <p class="lead">Cover is a one-page template for building simple and beautiful home pages. Download, edit the
