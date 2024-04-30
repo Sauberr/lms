@@ -50,4 +50,3 @@ class DeleteStudentView(DeleteView):
     success_url = reverse_lazy('students:students_list')
     pk_url_kwarg = 'uuid'
     queryset = Student.objects.all()
-

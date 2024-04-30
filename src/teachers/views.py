@@ -54,4 +54,3 @@ class GetTeacherGroupInfoView(DetailView):
         context = super().get_context_data(**kwargs)
         context['groups'] = self.object.groups.all()
         return context
-
