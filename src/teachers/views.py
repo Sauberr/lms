@@ -1,3 +1,4 @@
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models import Q
 from django.shortcuts import render
 from django.urls import reverse_lazy
@@ -7,7 +8,7 @@ from teachers.forms import TeacherForm
 from teachers.models import Teacher
 
 
-class TeacherListView(ListView):
+class TeacherListView(LoginRequiredMixin, ListView):
     template_name = "teachers/teachers_list.html"
     model = Teacher
     context_object_name = 'teachers'
@@ -20,14 +21,14 @@ class TeacherListView(ListView):
             return Teacher.objects.all()
 
 
-class CreateTeacherView(CreateView):
+class CreateTeacherView(LoginRequiredMixin, CreateView):
     template_name = "teachers/teachers_create.html"
     model = Teacher
     form_class = TeacherForm
     success_url = reverse_lazy('teachers:teachers_list')
 
 
-class UpdateTeacherView(UpdateView):
+class UpdateTeacherView(LoginRequiredMixin, UpdateView):
     template_name = "teachers/teachers_edit.html"
     model = Teacher
     form_class = TeacherForm
@@ -36,7 +37,7 @@ class UpdateTeacherView(UpdateView):
     queryset = Teacher.objects.all()
 
 
-class DeleteTeacherView(DeleteView):
+class DeleteTeacherView(LoginRequiredMixin, DeleteView):
     template_name = "teachers/teachers_delete.html"
     model = Teacher
     success_url = reverse_lazy('teachers:teachers_list')
@@ -44,7 +45,7 @@ class DeleteTeacherView(DeleteView):
     queryset = Teacher.objects.all()
 
 
-class GetTeacherGroupInfoView(DetailView):
+class GetTeacherGroupInfoView(LoginRequiredMixin, DetailView):
     template_name = "teachers/teacher_groups.html"
     model = Teacher
     pk_url_kwarg = "pk"

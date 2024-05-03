@@ -35,6 +35,7 @@ INSTALLED_APPS: Tuple[str, ...] = (
     "students",
     "groups",
     "teachers",
+    "user_account",
 )
 
 CRISPY_TEMPLATE_PACK = "bootstrap5"
@@ -53,6 +54,9 @@ MIDDLEWARE: Tuple[str, ...] = (
 INTERNAL_IPS: Tuple[str, ...] = ("127.0.0.1",)
 
 ROOT_URLCONF = "config.urls"
+
+LOGIN_REDIRECT_URL = "index"
+LOGOUT_REDIRECT_URL = "user_account:login"
 
 TEMPLATES = [
     {
@@ -127,3 +131,10 @@ MEDIA_URL = "/media/"
 MEDIA_ROOT = (BASE_DIR / "media")
 
 STATIC_ROOT = (BASE_DIR / "staticfiles")
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = 'sauberrtest@gmail.com'
+EMAIL_HOST_PASSWORD = 'savxylyptwlutksb'

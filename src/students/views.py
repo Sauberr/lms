@@ -1,3 +1,4 @@
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models import Q
 from django.shortcuts import render
 from django.urls import reverse, reverse_lazy
@@ -15,7 +16,7 @@ class IndexView(TemplateView):
     http_method_names = ['get']
 
 
-class StudentsListView(ListView):
+class StudentsListView(LoginRequiredMixin, ListView):
     template_name = "students/students_list.html"
     model = Student
     context_object_name = 'students'
@@ -28,14 +29,14 @@ class StudentsListView(ListView):
             return Student.objects.all()
 
 
-class CreateStudentView(CreateView):
+class CreateStudentView(LoginRequiredMixin, CreateView):
     template_name = "students/students_create.html"
     model = Student
     form_class = StudentForm
     success_url = reverse_lazy('students:students_list')
 
 
-class UpdateStudentView(UpdateView):
+class UpdateStudentView(LoginRequiredMixin, UpdateView):
     template_name = "students/students_edit.html"
     model = Student
     form_class = StudentForm
@@ -44,7 +45,7 @@ class UpdateStudentView(UpdateView):
     queryset = Student.objects.all()
 
 
-class DeleteStudentView(DeleteView):
+class DeleteStudentView(LoginRequiredMixin, DeleteView):
     template_name = "students/students_delete.html"
     model = Student
     success_url = reverse_lazy('students:students_list')

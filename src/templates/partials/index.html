@@ -79,36 +79,35 @@
 <div class="cover-container d-flex w-100 h-100 p-3 mx-auto flex-column">
     <header class="mb-auto">
         <div>
-            <a style="color: white;" href="{%  url 'index' %}"><h3 class="float-md-start mb-0">LMS</h3></a>
-            <nav class="nav nav-masthead justify-content-center float-md-end">
-                 <div class="dropdown">
-                <a class="nav-link dropdown-toggle" href="#" id="studentsDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                    Students
-                </a>
-                <ul class="dropdown-menu" aria-labelledby="studentsDropdown">
-                    <li><a class="dropdown-item" href="{%  url 'students:students_list' %}">Students List</a></li>
-                    <li><a class="dropdown-item" href="{%  url 'students:create_student' %}">Create Student</a></li>
-                </ul>
+            <h3 class="float-md-start mb-0"><a class="nav-link fw-bold py-1 px-0" style="color: #fff;" aria-current="page" href={% url "index" %}>LMS</a></h3>
+          <nav class="nav nav-masthead justify-content-center float-md-end">
+            <a class="nav-link fw-bold py-1 px-0" style="margin-right: 3mm; color: white; font-size: 5mm" href={% url "groups:groups_list" %}>Groups</a>
+            <a class="nav-link fw-bold py-1 px-0" style="margin-right: 3mm; color: white; font-size: 5mm" href={% url "students:students_list" %}>Students</a>
+            <a class="nav-link fw-bold py-1 px-0" style="margin-right: 3mm; color: white; font-size: 5mm" href={% url "teachers:teachers_list" %}>Teachers</a>
+               <div class="dropdown text-center">
+              <a href="#" class="d-block link-dark text-decoration-none dropdown-toggle show" data-bs-toggle="dropdown" aria-expanded="true">
+                  <img src="https://ps.w.org/user-avatar-reloaded/assets/icon-128x128.png" alt="menu" width="32" height="32" class="rounded-circle">
+              </a>
+              <ul class="dropdown-menu text-small" style="position: absolute; inset: 0px auto auto 0px; margin: 0px; transform: translate3d(0px, 34.4px, 0px);" data-popper-placement="bottom-start">
+                  {%  if user.is_authenticated %}
+                      <li><p class="dropdown-item-text">{{ user.username }}</p></li>
+                      <li><hr class="dropdown-divider"></li>
+                      <li><a class="dropdown-item" href="">Profile</a></li>
+                      <li><a class="dropdown-item" href="#">Change password</a></li>
+                      <li><hr class="dropdown-divider"></li>
+                      <li><a class="dropdown-item" href="{%  url 'user_account:logout' %}">Logout</a></li>
+                  {% else %}
+                      <li><a class="dropdown-item" href="{%  url 'user_account:login' %}">Login</a></li>
+                      <li><a class="dropdown-item" href="{% url 'user_account:registration' %}">Registration</a></li>
+                      <li><hr class="dropdown-divider"></li>
+                      <li><a class="dropdown-item" href="#">Change password</a></li>
+                      <li><hr class="dropdown-divider"></li>
+                      <li><a class="dropdown-item" href="">Login via GitHub</a></li>
+                      <li><a class="dropdown-item" href="">Login via Google</a></li>
+                  {% endif %}
+              </ul>
             </div>
-            <div class="dropdown">
-                <a class="nav-link dropdown-toggle" href="#" id="groupsDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                    Groups
-                </a>
-                <ul class="dropdown-menu" aria-labelledby="groupsDropdown">
-                    <li><a class="dropdown-item" href="{%  url 'groups:groups_list' %}">Groups List</a></li>
-                    <li><a class="dropdown-item" href="{%  url 'groups:create_group' %}">Create Group</a></li>
-                </ul>
-            </div>
-            <div class="dropdown">
-                <a class="nav-link dropdown-toggle" href="#" id="teachersDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                    Teachers
-                </a>
-                <ul class="dropdown-menu" aria-labelledby="teachersDropdown">
-                    <li><a class="dropdown-item" href="{%  url 'teachers:teachers_list' %}">Teachers List</a></li>
-                    <li><a class="dropdown-item" href="{%  url 'teachers:create_teacher' %}">Create Teacher</a></li>
-                </ul>
-            </div>
-            </nav>
+          </nav>
         </div>
     </header>
 
