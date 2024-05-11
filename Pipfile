@@ -21,6 +21,7 @@ ruff = "*"
 django-crispy-forms = "*"
 crispy-bootstrap5 = "*"
 uuid = "*"
+django-inlinecss-redux = "*"
 
 [dev-packages]
 

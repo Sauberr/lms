@@ -137,4 +137,5 @@ EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 EMAIL_HOST_USER = 'sauberrtest@gmail.com'
-EMAIL_HOST_PASSWORD = 'savxylyptwlutksb'
+EMAIL_HOST_PASSWORD = 'ybypffvswumtnyax'
+EMAIL_FAIL_SILENTLY = False
