@@ -2,6 +2,8 @@ from django.db import models
 from faker import Faker
 from shortuuid.django_fields import ShortUUIDField
 
+from students.utils.validators import gpa_validator, median_age_validator
+
 
 class Group(models.Model):
     id = ShortUUIDField(
@@ -17,6 +19,8 @@ class Group(models.Model):
     students_count = models.PositiveIntegerField(default=0)
     description = models.TextField(null=True)
     created_at = models.DateTimeField(auto_now_add=True)
+    gpa = models.FloatField(default=0, null=True, validators=[gpa_validator])
+    median_age = models.FloatField(default=0, null=True, validators=[median_age_validator])
     updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
@@ -38,6 +42,8 @@ class Group(models.Model):
                 department=department,
                 description=faker.text(max_nb_chars=200),
                 students_count=faker.random.randint(1, 50),
+                gpa=round(faker.random.uniform(1, 5), 2),
+                median_age=round(faker.random.uniform(18, 30), 2),
                 created_at=faker.date_time_between(start_date="-30y", end_date="-18y"),
                 updated_at=faker.date_time_between(start_date="-30y", end_date="-18y"),
             )

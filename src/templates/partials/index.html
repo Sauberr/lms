@@ -92,7 +92,7 @@
                   {%  if user.is_authenticated %}
                       <li><p class="dropdown-item-text">{{ user.username }}</p></li>
                       <li><hr class="dropdown-divider"></li>
-                      <li><a class="dropdown-item" href="">Profile</a></li>
+                      <li><a class="dropdown-item" href="{%  url 'user_account:profile' user.pk %}">Profile</a></li>
                       <li><a class="dropdown-item" href="#">Change password</a></li>
                       <li><hr class="dropdown-divider"></li>
                       <li><a class="dropdown-item" href="{%  url 'user_account:logout' %}">Logout</a></li>

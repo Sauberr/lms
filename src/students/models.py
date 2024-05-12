@@ -9,6 +9,8 @@ from groups.models import Group
 
 from uuid import uuid4
 
+from students.utils.validators import gpa_validator
+
 
 class Student(Person):
     uuid = models.UUIDField(primary_key=True, editable=False, default=uuid4, unique=True, db_index=True)
@@ -16,6 +18,7 @@ class Student(Person):
     email = models.EmailField(max_length=120)
     grade = models.PositiveIntegerField(default=0)
     birth_date = models.DateField(null=True)
+    gpa = models.FloatField(default=0, null=True, validators=[gpa_validator])
     department = models.CharField(max_length=120, null=True)
     group = models.ForeignKey(Group, on_delete=models.CASCADE)
     resume = models.FileField(upload_to="resumes", null=True, blank=True)
@@ -45,5 +48,6 @@ class Student(Person):
                 email=faker.email(),
                 birth_date=faker.date_time_between(start_date="-30y", end_date="-18y"),
                 grade=faker.random_int(min=1, max=12),
+                gpa=round(faker.random.uniform(1, 5), 2),
                 department=faker.job(),
             )

@@ -22,6 +22,10 @@ django-crispy-forms = "*"
 crispy-bootstrap5 = "*"
 uuid = "*"
 django-inlinecss-redux = "*"
+django-location-field = "*"
+django-phonenumber-field = "*"
+phonenumbers = "*"
+pycountry = "*"
 
 [dev-packages]
 

@@ -1,0 +1,18 @@
+{% extends 'partials/index.html' %}
+
+
+{% block content %}
+    <div style="font-family: fantasy; letter-spacing: 1px;">
+        <img src="{{ userprofile.photo.url }}" class="rounded-circle"
+             style="height: 5em; width: 5em; object-fit: cover" alt="None">
+        <h2>Username: {{ user.username }};</h2>
+        <h4>Name: {{ user.first_name }};</h4>
+        <h4>Surname: {{ user.last_name }}</h4>
+        <h4>Email: {{ user.email }}</h4>
+        <h4>Phone Number: {{ userprofile.phone_number }};</h4>
+        <h4>Country: {{ userprofile.location }};</h4>
+        <h4>Birth Date: {{ userprofile.birth_date }};</h4>
+        <h4>Sex: {{ userprofile.sex }};</h4>
+        <h4>Status: {{ userprofile.status }};</h4>
+    </div>
+{% endblock %}

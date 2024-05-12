@@ -28,6 +28,8 @@ INSTALLED_APPS: Tuple[str, ...] = (
     "django_extensions",
     "debug_toolbar",
     "django.contrib.humanize",
+    "location_field.apps.DefaultConfig",
+    "phonenumber_field",
 
     "crispy_forms",
     "crispy_bootstrap5",

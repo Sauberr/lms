@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "d73f7672cb6208694dd917d3b516de87d7f6117b3af7260768308ceffedb551e"
+            "sha256": "01ac852dae616c22d07d95a3066801e63c40a774358bb2a7b267e9ee5590f2fc"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -153,6 +153,22 @@
             "index": "pypi",
             "version": "==0.4.0"
         },
+        "django-location-field": {
+            "hashes": [
+                "sha256:b0660d3fd024541fbe53ef723e3b02ec4014fbc886ee3d8342e031f1ab28d11d"
+            ],
+            "index": "pypi",
+            "version": "==2.7.3"
+        },
+        "django-phonenumber-field": {
+            "hashes": [
+                "sha256:bc6eaa49d1f9d870944f5280258db511e3a1ba5e2fbbed255488dceacae45d06",
+                "sha256:f9cdb3de085f99c249328293a3b93d4e5fa440c0c8e3b99eb0d0f54748629797"
+            ],
+            "index": "pypi",
+            "markers": "python_version >= '3.8'",
+            "version": "==7.3.0"
+        },
         "django-shortuuidfield": {
             "hashes": [
                 "sha256:a292c0fe5538abe947b131e2b914edd9ac44afcc6a40eaec71448e6231a3ef00"
@@ -277,6 +293,14 @@
             "markers": "python_version >= '3.8'",
             "version": "==0.12.1"
         },
+        "phonenumbers": {
+            "hashes": [
+                "sha256:68e06d20ae2f8fe5c7c7fd5b433f4257bc3cc747dc5196a029c7898ea449b012",
+                "sha256:b4e2371e35a1172aa2c91c9200b1e48e87b9355eb575768dd38058fc8d72c9ff"
+            ],
+            "index": "pypi",
+            "version": "==8.13.36"
+        },
         "pillow": {
             "hashes": [
                 "sha256:048ad577748b9fa4a99a0548c64f2cb8d672d5bf2e643a739ac8faff1164238c",
@@ -392,6 +416,15 @@
             ],
             "markers": "python_version >= '3.8'",
             "version": "==2.11.1"
+        },
+        "pycountry": {
+            "hashes": [
+                "sha256:00569d82eaefbc6a490a311bfa84a9c571cff9ddbf8b0a4f4e7b4f868b4ad925",
+                "sha256:2ff91cff4f40ff61086e773d61e72005fe95de4a57bfc765509db05695dc50ab"
+            ],
+            "index": "pypi",
+            "markers": "python_version >= '3.8'",
+            "version": "==23.12.11"
         },
         "pyflakes": {
             "hashes": [
