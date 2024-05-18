@@ -4,6 +4,7 @@ from django.shortcuts import render
 from django.urls import reverse, reverse_lazy
 from webargs import fields
 from webargs.djangoparser import use_kwargs
+from django.contrib import messages
 
 from students.forms import StudentForm
 from students.models import Student
@@ -14,6 +15,16 @@ class IndexView(TemplateView):
     template_name = "partials/index.html"
     extra_context = {'title': 'Home'}
     http_method_names = ['get']
+
+    def get(self, request, *args, **kwargs):
+        print(f'In view" {request.current_time}')
+
+        if request.user.is_authenticated:
+            messages.success(request, "You are logged in")
+        else:
+            messages.info(request, "Please login first to continue")
+
+        return super().get(request, *args, **kwargs)
 
 
 class StudentsListView(LoginRequiredMixin, ListView):

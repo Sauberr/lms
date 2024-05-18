@@ -1,5 +1,5 @@
 from pathlib import Path
-from typing import Tuple
+from typing import Tuple, List, Any
 import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -14,11 +14,15 @@ SECRET_KEY = "django-insecure-(#%%u$ytmzr$8ck8q$44%6v!ukvmolt-vh3=1s5#a)yt!ep*-$
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["*", "127.0.0.1"]
+ALLOWED_HOSTS: List[Any] = ["*", "127.0.0.1"]
+
+AUTH_USER_MODEL = 'user_account.Customer'
 
 # Application definition
 
 INSTALLED_APPS: Tuple[str, ...] = (
+    "admin_interface",
+    "colorfield",
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
@@ -28,11 +32,12 @@ INSTALLED_APPS: Tuple[str, ...] = (
     "django_extensions",
     "debug_toolbar",
     "django.contrib.humanize",
-    "location_field.apps.DefaultConfig",
-    "phonenumber_field",
+    "social_django",
 
     "crispy_forms",
     "crispy_bootstrap5",
+    "phonenumber_field",
+    "location_field.apps.DefaultConfig",
 
     "students",
     "groups",
@@ -41,6 +46,9 @@ INSTALLED_APPS: Tuple[str, ...] = (
 )
 
 CRISPY_TEMPLATE_PACK = "bootstrap5"
+
+X_FRAME_OPTIONS = "SAMEORIGIN"
+SILENCED_SYSTEM_CHECKS = ["security.W019"]
 
 MIDDLEWARE: Tuple[str, ...] = (
     "django.middleware.security.SecurityMiddleware",
@@ -51,6 +59,8 @@ MIDDLEWARE: Tuple[str, ...] = (
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
     "debug_toolbar.middleware.DebugToolbarMiddleware",
+    "social_django.middleware.SocialAuthExceptionMiddleware",
+    "students.utils.middleware.CustomMiddleware",
 )
 
 INTERNAL_IPS: Tuple[str, ...] = ("127.0.0.1",)
@@ -59,6 +69,24 @@ ROOT_URLCONF = "config.urls"
 
 LOGIN_REDIRECT_URL = "index"
 LOGOUT_REDIRECT_URL = "user_account:login"
+
+SESSION_COOKIE_AGE = 86400
+SESSION_EXPIRE_AT_BROWSER_CLOSE = True
+SESSION_SAVE_EVERY_REQUEST = True
+# SESSION_FILE_PATH = '/tmp'
+
+SOCIAL_AUTH_URL_NAMESPACE = "social"
+
+SOCIAL_AUTH_GITHUB_KEY = "52a33b8c679528a43e11"
+SOCIAL_AUTH_GITHUB_SECRET = "cd94ceb341bd4abf467faca60270a5235958cbbe"
+SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = "678952636350-kv8a5nhkhka762vehp0t57n0b5pubsvg.apps.googleusercontent.com"
+SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = "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"
+
+AUTHENTICATION_BACKENDS = (
+    "social_core.backends.google.GoogleOAuth2",
+    "social_core.backends.github.GithubOAuth2",
+    "django.contrib.auth.backends.ModelBackend",
+)
 
 TEMPLATES = [
     {
@@ -71,6 +99,8 @@ TEMPLATES = [
                 "django.template.context_processors.request",
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
+                "social_django.context_processors.backends",
+                "social_django.context_processors.login_redirect",
             ],
         },
     },
@@ -141,3 +171,61 @@ EMAIL_USE_TLS = True
 EMAIL_HOST_USER = 'sauberrtest@gmail.com'
 EMAIL_HOST_PASSWORD = 'ybypffvswumtnyax'
 EMAIL_FAIL_SILENTLY = False
+
+SOCIAL_AUTH_PIPELINE = (
+    'social_core.pipeline.social_auth.social_details',
+    'social_core.pipeline.social_auth.social_uid',
+    'social_core.pipeline.social_auth.auth_allowed',
+    'social_core.pipeline.social_auth.social_user',
+    'social_core.pipeline.user.get_username',
+    'social_core.pipeline.user.create_user',
+    'user_account.pipeline.cleanup_social_account',
+    'social_core.pipeline.social_auth.associate_user',
+    'social_core.pipeline.social_auth.load_extra_data',
+    'social_core.pipeline.user.user_details'
+)
+
+LOGGING = {
+    "version": 1,
+    "disable_existing_loggers": False,
+    "formatters": {
+        "verbose": {
+            "format": "{levelname} {asctime} {module} {message}",
+            "style": "{",
+        },
+        "simple": {
+            "format": "{levelname} {message}",
+            "style": "{",
+        },
+    },
+    "handlers": {
+        "console": {"level": "INFO",
+                    "class": "logging.StreamHandler",
+                    "formatter": "simple"},
+        "mail_admins": {
+            "level": "ERROR",
+            "class": "django.utils.log.AdminEmailHandler",
+        },
+        "file": {
+            "level": "DEBUG",
+            "class": "logging.FileHandler",
+            "filename": os.path.join(BASE_DIR.parent, "LOGS", "debug.log"),
+            "formatter": "verbose",
+        },
+    },
+    "loggers": {
+        # "django": {
+        #     "handlers": ["console"],
+        #     "propagate": True,
+        # },
+        # "django.request": {
+        #     "handlers": ["mail_admins"],
+        #     "level": "ERROR",
+        #     "propagate": False,
+        # },
+        "custom_logger": {
+            "handlers": ["console", "mail_admins", "file"],
+            "level": "DEBUG",
+        },
+    }
+}

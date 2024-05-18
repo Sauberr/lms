@@ -18,7 +18,7 @@ class Teacher(Person):
     salary = models.PositiveIntegerField(default=0)
     sex = models.CharField(choices=SEX_CHOICE, max_length=1)
     subject = models.CharField(max_length=255)
-    groups = models.ManyToManyField(Group)
+    groups = models.ManyToManyField(Group, related_name="teachers")
 
     def __str__(self):
         return f"{self.first_name} {self.last_name}"

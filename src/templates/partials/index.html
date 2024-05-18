@@ -86,7 +86,11 @@
             <a class="nav-link fw-bold py-1 px-0" style="margin-right: 3mm; color: white; font-size: 5mm" href={% url "teachers:teachers_list" %}>Teachers</a>
                <div class="dropdown text-center">
               <a href="#" class="d-block link-dark text-decoration-none dropdown-toggle show" data-bs-toggle="dropdown" aria-expanded="true">
-                  <img src="https://ps.w.org/user-avatar-reloaded/assets/icon-128x128.png" alt="menu" width="32" height="32" class="rounded-circle">
+                  {% if user.is_authenticated and user.avatar %}
+                        <img src="{{ user.avatar }}" alt="menu" width="32" height="32" class="rounded-circle">
+                  {% else %}
+                    <img src="https://ps.w.org/user-avatar-reloaded/assets/icon-128x128.png" alt="menu" width="32" height="32" class="rounded-circle">
+                  {% endif %}
               </a>
               <ul class="dropdown-menu text-small" style="position: absolute; inset: 0px auto auto 0px; margin: 0px; transform: translate3d(0px, 34.4px, 0px);" data-popper-placement="bottom-start">
                   {%  if user.is_authenticated %}
@@ -102,8 +106,8 @@
                       <li><hr class="dropdown-divider"></li>
                       <li><a class="dropdown-item" href="#">Change password</a></li>
                       <li><hr class="dropdown-divider"></li>
-                      <li><a class="dropdown-item" href="">Login via GitHub</a></li>
-                      <li><a class="dropdown-item" href="">Login via Google</a></li>
+                      <li><a class="dropdown-item" href="{% url 'social:begin' 'github' %}">Login via GitHub</a></li>
+                      <li><a class="dropdown-item" href="{% url 'social:begin' 'google-oauth2' %}">Login via Google</a></li>
                   {% endif %}
               </ul>
             </div>
@@ -113,6 +117,15 @@
 
     <main class="px-3">
         {% block content %}
+            {%  if messages %}
+                <ul class="message">
+                    {%  for message in messages %}
+                        <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                            {{ message|safe }}
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    {%  endfor %}
+                </ul>
+            {%  endif %}
             <form action="{% url 'students:students_list'  %}" method="GET" class="mb-3">
                 <div class="input-group">
                     <input type="text" name="q" class="form-control" placeholder="Search" aria-label="Search">

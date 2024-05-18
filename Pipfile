@@ -26,6 +26,8 @@ django-location-field = "*"
 django-phonenumber-field = "*"
 phonenumbers = "*"
 pycountry = "*"
+social-auth-app-django = "*"
+django-admin-interface = "*"
 
 [dev-packages]
 
