@@ -90,7 +90,6 @@ SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = ""
 AUTHENTICATION_BACKENDS = (
     "social_core.backends.google.GoogleOAuth2",
     "social_core.backends.github.GithubOAuth2",
-    # "django.contrib.auth.backends.ModelBackend",
     "user_account.auth_backend.AuthBackend",
 )
 
