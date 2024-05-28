@@ -26,8 +26,8 @@ class UserRegistrationForm(UserCreationForm):
 
     def clean_password1(self):
         password1 = self.cleaned_data.get("password1")
-        special_characters = "!@#$%^&*()_-+={}[]|\:;'<>?,./"
-        capitalize_letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+        special_characters = "!@#$%^&*()_-+={}[]|\:;'<>?,./" # noqa
+        capitalize_letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ" # noqa
 
         has_special = any(char in special_characters for char in password1)
         has_capital = any(char in capitalize_letters for char in password1)

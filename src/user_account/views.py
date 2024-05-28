@@ -15,11 +15,11 @@ from user_account.models import UserProfile
 
 
 class UserLoginView(LoginView):
-    ...
+    pass
 
 
 class UserLogoutView(LogoutView):
-    ...
+    pass
 
 
 class UserRegistrationView(CreateView):
