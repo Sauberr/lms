@@ -22,6 +22,7 @@ AUTH_USER_MODEL = 'user_account.Customer'
 # Application definition
 
 INSTALLED_APPS: Tuple[str, ...] = (
+    # Django apps
     "admin_interface",
     "colorfield",
     "django.contrib.admin",
@@ -35,12 +36,14 @@ INSTALLED_APPS: Tuple[str, ...] = (
     "django.contrib.humanize",
     "social_django",
 
+    # Custom apps
     "crispy_forms",
     "crispy_bootstrap5",
     "phonenumber_field",
     "location_field.apps.DefaultConfig",
     "import_export",
 
+    # My apps
     "students",
     "groups",
     "teachers",
