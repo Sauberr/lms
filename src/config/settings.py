@@ -1,6 +1,7 @@
 from pathlib import Path
 from typing import Tuple, List, Any
 import os
+from import_export.formats.base_formats import HTML, CSV, JSON, YAML
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -38,6 +39,7 @@ INSTALLED_APPS: Tuple[str, ...] = (
     "crispy_bootstrap5",
     "phonenumber_field",
     "location_field.apps.DefaultConfig",
+    "import_export",
 
     "students",
     "groups",
@@ -55,6 +57,7 @@ MIDDLEWARE: Tuple[str, ...] = (
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
+    "django.middleware.locale.LocaleMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
@@ -64,6 +67,8 @@ MIDDLEWARE: Tuple[str, ...] = (
 )
 
 INTERNAL_IPS: Tuple[str, ...] = ("127.0.0.1",)
+
+IMPORT_EXPORT_FORMATS: List[Any] = [HTML, CSV, JSON,  YAML]
 
 ROOT_URLCONF = "config.urls"
 
@@ -85,7 +90,8 @@ SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = "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"
 AUTHENTICATION_BACKENDS = (
     "social_core.backends.google.GoogleOAuth2",
     "social_core.backends.github.GithubOAuth2",
-    "django.contrib.auth.backends.ModelBackend",
+    # "django.contrib.auth.backends.ModelBackend",
+    "user_account.auth_backend.AuthBackend",
 )
 
 TEMPLATES = [
@@ -168,8 +174,8 @@ EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
-EMAIL_HOST_USER = 'sauberrtest@gmail.com'
-EMAIL_HOST_PASSWORD = 'ybypffvswumtnyax'
+EMAIL_HOST_USER = ''
+EMAIL_HOST_PASSWORD = ''
 EMAIL_FAIL_SILENTLY = False
 
 SOCIAL_AUTH_PIPELINE = (

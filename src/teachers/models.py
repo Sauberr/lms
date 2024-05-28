@@ -21,7 +21,7 @@ class Teacher(Person):
     groups = models.ManyToManyField(Group, related_name="teachers")
 
     def __str__(self):
-        return f"{self.first_name} {self.last_name}"
+        return f"{self.first_name}_{self.last_name}"
 
     class Meta:
         verbose_name = "Teacher"

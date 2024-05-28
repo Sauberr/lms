@@ -3,7 +3,7 @@ import pycountry
 
 from django.contrib.auth import get_user_model
 from django.contrib.auth.base_user import AbstractBaseUser
-from django.contrib.auth.models import PermissionsMixin, UserManager
+from django.contrib.auth.models import PermissionsMixin
 from django.contrib.auth.validators import UnicodeUsernameValidator
 from django.db import models
 from phonenumber_field.modelfields import PhoneNumberField
@@ -33,7 +33,8 @@ class Customer(AbstractBaseUser, PermissionsMixin):
 
     first_name = models.CharField(_("name"), max_length=150, blank=True)
     last_name = models.CharField(_("surname"), max_length=150, blank=True)
-    email = models.EmailField(_("email address"), unique=True)
+    email = models.EmailField(_("email address"), blank=True, null=True)
+    phone_number = PhoneNumberField(_("phone number"), blank=True, null=True)
     is_staff = models.BooleanField(
         _("staff status"),
         default=False,

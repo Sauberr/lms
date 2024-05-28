@@ -28,6 +28,8 @@ phonenumbers = "*"
 pycountry = "*"
 social-auth-app-django = "*"
 django-admin-interface = "*"
+django-import-export = "*"
+tablib = {extras = ["yaml"], version = "*"}
 
 [dev-packages]
 

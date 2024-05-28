@@ -1,12 +1,31 @@
 from django.contrib import admin
+from django.utils.html import format_html
+from django.urls import reverse
+from import_export.admin import ExportActionMixin
+from import_export import resources
+from import_export.fields import Field
 
-from students.models import Student, Group
+from students.models import Student
+from students.utils.admin_filter import AgeRangeListFilter
+
+
+class StudentResource(resources.ModelResource):
+    birth_date = Field()
+
+    class Meta:
+        model = Student
+        fields = ('first_name', 'last_name', 'birth_date')
+        export_order = ('first_name', 'last_name', 'birth_date')
+
+    def dehydrate_birth_date(self, student):
+        return student.birth_date.strftime('%Y-%m-%d')
 
 
 @admin.register(Student)
-class StudentAdmin(admin.ModelAdmin):
+class StudentAdmin(ExportActionMixin, admin.ModelAdmin):
+    resource_class = StudentResource
     list_display = ('first_name', 'last_name', 'email', 'group', 'gpa', 'grade')
-    list_filter = ('group', 'grade')
+    list_filter = ('group', 'grade', AgeRangeListFilter)
     list_display_links = ('email', )
     date_hierarchy = 'birth_date'
     search_fields = ('first_name', 'last_name', 'email')

@@ -22,6 +22,7 @@ class Group(models.Model):
     gpa = models.FloatField(default=0, null=True, validators=[gpa_validator])
     median_age = models.FloatField(default=0, null=True, validators=[median_age_validator])
     updated_at = models.DateTimeField(auto_now=True)
+    max_count_of_students = models.PositiveIntegerField(default=20, null=True)
 
     def __str__(self):
         return f"{self.title} [{self.department}] ({self.id})"

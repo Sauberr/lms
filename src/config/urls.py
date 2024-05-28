@@ -13,6 +13,7 @@ urlpatterns = [
     path("teachers/", include("teachers.urls")),
     path("users/", include("user_account.urls")),
     path("oauth/", include("social_django.urls", namespace="social")),
+    path('i18n/', include('django.conf.urls.i18n')),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 if settings.DEBUG:

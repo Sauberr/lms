@@ -1,3 +1,6 @@
+import datetime
+
+import requests
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models import Q
 from django.shortcuts import render
@@ -34,10 +37,19 @@ class StudentsListView(LoginRequiredMixin, ListView):
 
     def get_queryset(self):
         query = self.request.GET.get('q')
+        self.request.session[f'search_text_{datetime.datetime.now()}'] = query
         if query:
             return Student.objects.filter(Q(first_name__icontains=query) | Q(last_name__icontains=query))
         else:
             return Student.objects.all()
+
+
+def search_history(request):
+    search_logs = {}
+    for key, value in request.session.items():
+        search_logs.update({key: value})
+
+    return render(request, 'search_history.html', {'search_logs': search_logs})
 
 
 class CreateStudentView(LoginRequiredMixin, CreateView):
