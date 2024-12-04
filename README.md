@@ -29,6 +29,6 @@ All actions should be executed from the source directory of the project and only
    ```
 
 4. Run application
-```
-  py manage.py runserver
-```
+   ```
+      py manage.py runserver
+   ```
