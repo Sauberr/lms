@@ -32,3 +32,7 @@ All actions should be executed from the source directory of the project and only
    ```
       py manage.py runserver
    ```
+
+## License
+
+This project uses the [MIT] license(https://github.com/Sauberr/lms/blob/master/LICENSE)
