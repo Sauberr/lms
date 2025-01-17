@@ -36,3 +36,7 @@ All actions should be executed from the source directory of the project and only
 ## License
 
 This project uses the [MIT] license(https://github.com/Sauberr/lms/blob/master/LICENSE)
+
+## Contact 
+
+To contact the author of the project, write to email 𝚍𝚖𝚒𝚝𝚛𝚒𝚢𝚋𝚒𝚛𝚒𝚕𝚔𝚘@𝚐𝚖𝚊𝚒𝚕.𝚌𝚘𝚖.
